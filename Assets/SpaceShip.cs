@@ -1,21 +1,24 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 [RequireComponent (typeof(Rigidbody))]
-public class BasicFlight : MonoBehaviour
+public class SpaceShip : MonoBehaviour
 {
     [Header("=== Ship Movement Settings ===")]
     [SerializeField] float zoneMaxSpeed = 50f;
-    [SerializeField] float yawTorque = 100f;
-    [SerializeField] float pitchTorque = 100f;
-    [SerializeField] float rollTorque = 50f;
-    [SerializeField] float thrust = 100f;
+    [SerializeField] float yawTorque = 300f;
+    [SerializeField] float pitchTorque = 300f;
+    [SerializeField] float rollTorque = 100f;
+    [SerializeField] float thrust = 2000f;
     [SerializeField] float upThrust = 50f;
     [SerializeField] float strafeThrust = 50f;
     [SerializeField, Range(0.001f, 0.999f)] float thrustGlideReduction = 0.999f;
     [SerializeField, Range(0.001f, 0.999f)] float upDownGlideReduction = 0.111f;
     [SerializeField, Range(0.001f, 0.999f)] float leftRightGlideReduction = 0.111f;
     [SerializeField] bool inverted = false;
+
+    [SerializeField] private CinemachineVirtualCamera shipCam;
 
     [Header("=== Boost Settings ===")]
     [SerializeField] float maxBoostAmount = 2f;
@@ -40,18 +43,48 @@ public class BasicFlight : MonoBehaviour
 
     //Privates
     private bool isOccupied = false;
+    private Player_OnFoot player;
 
-	#region Unity Functions
-	// Start is called before the first frame update
-	void Start()
+    public delegate void OnRequestShipExit();
+    public event OnRequestShipExit onRequestShipExit;
+
+    #region Unity Functions
+    // Start is called before the first frame update
+    void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         currentBoostAmount = maxBoostAmount;
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_OnFoot>();
+        player.onRequestShipEntry += PlayerEnteredShip;
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+	void OnEnable()
+	{
+        if (shipCam != null)
+        {
+            CinemachineCameraSwitcher.Register(shipCam);
+        }
+        else
+        {
+            Debug.Log("Ship camera is not assigned!");
+        }
+    }
+
+    void OnDisable()
+	{
+        if (shipCam != null)
+        {
+            CinemachineCameraSwitcher.UnRegister(shipCam);
+        }
+        else
+        {
+            Debug.Log("Ship camera is not assigned!");
+        }
+    }
+
+	// Update is called once per frame
+	void FixedUpdate()
     {
         if (isOccupied)
 		{
@@ -126,6 +159,20 @@ public class BasicFlight : MonoBehaviour
 
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, zoneMaxSpeed);
     }
+
+    void PlayerEnteredShip()
+	{
+        rb.isKinematic = false;
+        CinemachineCameraSwitcher.SwitchCamera(shipCam);
+        isOccupied = true;
+	}
+
+    void playerExitedShip()
+	{
+        rb.isKinematic = true;
+        isOccupied = false;
+        if (onRequestShipExit != null) onRequestShipExit();
+    }
     #endregion
 
     #region Public Methods
@@ -162,5 +209,13 @@ public class BasicFlight : MonoBehaviour
 	{
         boosting = context.performed;
 	}
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (isOccupied && context.phase == InputActionPhase.Performed)
+        {
+            playerExitedShip();
+
+        }
+    }
     #endregion
 }

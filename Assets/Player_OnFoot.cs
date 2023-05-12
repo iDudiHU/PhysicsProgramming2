@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class ZeroGMovement : MonoBehaviour
+public class Player_OnFoot : MonoBehaviour
 {
 	#region Private Variables
 	[Header("=== Player Movement Settings ===")]
@@ -17,6 +18,7 @@ public class ZeroGMovement : MonoBehaviour
     [SerializeField] bool inverted = false;
 
     private Camera mainCam;
+    [SerializeField] private CinemachineVirtualCamera playerCam;
 
     [Header("=== Boost Settings ===")]
     [SerializeField] float maxBoostAmount = 2f;
@@ -38,6 +40,13 @@ public class ZeroGMovement : MonoBehaviour
     private float strafe1D;
     private float roll1D;
     private Vector2 pitchYaw;
+    #endregion
+
+    #region Public Variables
+    public ScreenSpaceUIElement interactUI;
+    public SpaceShip shipToEnter;
+    public delegate void OnRequestShipEntry();
+    public event OnRequestShipEntry onRequestShipEntry;
 	#endregion
 
 	#region Unity Functions
@@ -49,6 +58,29 @@ public class ZeroGMovement : MonoBehaviour
         rb.useGravity = false;
         currentBoostAmount = maxBoostAmount;
     }
+    void OnEnable()
+    {
+        if (playerCam != null)
+        {
+            CinemachineCameraSwitcher.Register(playerCam);
+        }
+        else
+        {
+            Debug.Log("Ship camera is not assigned!");
+        }
+    }
+
+    void OnDisable()
+    {
+        if (playerCam != null)
+        {
+            CinemachineCameraSwitcher.UnRegister(playerCam);
+        }
+        else
+        {
+            Debug.Log("Ship camera is not assigned!");
+        }
+    }
 
     // Update is called once per frame
     void FixedUpdate()
@@ -56,10 +88,19 @@ public class ZeroGMovement : MonoBehaviour
         HandleBoosting();
         HandleMovement();
     }
-    #endregion
 
-    #region Private Methods
-    void HandleBoosting()
+	private void OnTriggerEnter(Collider other)
+	{
+        IInteractable interactable = other.GetComponent<IInteractable>();
+        if (interactable != null)
+		{
+            interactable.Interact(this);
+		}
+	}
+	#endregion
+
+	#region Private Methods
+	void HandleBoosting()
     {
         if (boosting && currentBoostAmount > 0f)
         {
@@ -119,6 +160,21 @@ public class ZeroGMovement : MonoBehaviour
 
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, zoneMaxSpeed);
     }
+
+    void EnterShip()
+	{
+        transform.parent = shipToEnter.transform;
+        transform.gameObject.SetActive(false);
+
+        if (onRequestShipEntry != null) onRequestShipEntry();
+	}
+
+    void ExitShip()
+	{
+        transform.parent = null;
+        transform.gameObject.SetActive(true);
+        CinemachineCameraSwitcher.SwitchCamera(playerCam);
+    }
     #endregion
 
     #region Public Methods
@@ -127,6 +183,21 @@ public class ZeroGMovement : MonoBehaviour
     {
         inverted = !inverted;
     }
+
+    public void AssignShip(SpaceShip ship)
+	{
+        shipToEnter = ship;
+        if (shipToEnter != null)
+		{
+            shipToEnter.onRequestShipExit += ExitShip;
+		}
+	}
+
+    public void UnAssignShip(SpaceShip ship)
+	{
+        shipToEnter.onRequestShipExit -= ExitShip;
+        shipToEnter = null;
+	}
 
     #endregion
 
@@ -150,6 +221,28 @@ public class ZeroGMovement : MonoBehaviour
     public void OnBoost(InputAction.CallbackContext context)
     {
         boosting = context.performed;
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if(shipToEnter != null)
+		{
+            if (context.phase == InputActionPhase.Started)
+            {
+                interactUI.StartSliderAnimation();
+            }
+            else if (context.phase == InputActionPhase.Performed)
+            {
+                EnterShip();
+                interactUI.StopSliderAnimation();
+
+            }
+            else if (context.phase == InputActionPhase.Canceled)
+            {
+                interactUI.StopSliderAnimation();
+            }
+        }
+        
     }
     #endregion
 }

@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "EnterExit",
+                    "type": "Button",
+                    "id": "59be4e9c-5e21-4bbd-9f05-a7d557beb1a9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -368,6 +377,28 @@
                     "action": "Boost",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "901bd2a0-bf59-452a-9d21-53fe265efd2f",
+                    "path": "<Keyboard>/f",
+                    "interactions": "SlowTap(duration=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EnterExit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ae3340f8-43b4-4c29-a893-e5570ad654e5",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "SlowTap(duration=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EnterExit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -427,6 +458,15 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "e24db8e6-7f96-4d2e-8aa8-9b8dd753877f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": false
                 }
             ],
@@ -736,6 +776,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Boost",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a15dfd09-5076-4777-bd9b-f088d1bd4a43",
+                    "path": "<Keyboard>/f",
+                    "interactions": "SlowTap(duration=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e110808-95d4-4dfe-819a-ff6114854e30",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "SlowTap(duration=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
