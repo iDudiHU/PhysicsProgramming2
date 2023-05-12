@@ -1,13 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent (typeof(Rigidbody))]
-public class BasicFlight : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class ZeroGMovement : MonoBehaviour
 {
-    [Header("=== Ship Movement Settings ===")]
+	#region Private Variables
+	[Header("=== Player Movement Settings ===")]
     [SerializeField] float zoneMaxSpeed = 50f;
-    [SerializeField] float yawTorque = 100f;
-    [SerializeField] float pitchTorque = 100f;
     [SerializeField] float rollTorque = 50f;
     [SerializeField] float thrust = 100f;
     [SerializeField] float upThrust = 50f;
@@ -16,6 +15,8 @@ public class BasicFlight : MonoBehaviour
     [SerializeField, Range(0.001f, 0.999f)] float upDownGlideReduction = 0.111f;
     [SerializeField, Range(0.001f, 0.999f)] float leftRightGlideReduction = 0.111f;
     [SerializeField] bool inverted = false;
+
+    private Camera mainCam;
 
     [Header("=== Boost Settings ===")]
     [SerializeField] float maxBoostAmount = 2f;
@@ -37,14 +38,13 @@ public class BasicFlight : MonoBehaviour
     private float strafe1D;
     private float roll1D;
     private Vector2 pitchYaw;
-
-    //Privates
-    private bool isOccupied = false;
+	#endregion
 
 	#region Unity Functions
 	// Start is called before the first frame update
 	void Start()
     {
+        mainCam = Camera.main;
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         currentBoostAmount = maxBoostAmount;
@@ -53,16 +53,13 @@ public class BasicFlight : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (isOccupied)
-		{
-            HandleBoosting();
-            HandleMovement();
-		}
+        HandleBoosting();
+        HandleMovement();
     }
-	#endregion
+    #endregion
 
-	#region Private Methods
-	void HandleBoosting()
+    #region Private Methods
+    void HandleBoosting()
     {
         if (boosting && currentBoostAmount > 0f)
         {
@@ -83,46 +80,42 @@ public class BasicFlight : MonoBehaviour
     void HandleMovement()
     {
         //Roll
-        rb.AddRelativeTorque(Vector3.back * roll1D * rollTorque * Time.deltaTime);
+        rb.AddTorque(transform.up * roll1D * rollTorque * Time.deltaTime);
         //Thrust
         if (thrust1D > 0.1f || thrust1D < -0.1f)
         {
             float currentThrust = (boosting) ? thrust * boostMultiplier : thrust;
 
-            rb.AddRelativeForce(Vector3.forward * thrust1D * currentThrust * Time.deltaTime);
+            rb.AddForce(mainCam.transform.forward * thrust1D * currentThrust * Time.deltaTime);
             thrustGlide = thrust;
         }
         else
         {
-            rb.AddRelativeForce(Vector3.forward * thrustGlide * Time.deltaTime);
+            rb.AddForce(mainCam.transform.forward * thrustGlide * Time.deltaTime);
             thrustGlide *= thrustGlideReduction;
         }
         //Strafe
         if (strafe1D > 0.1f || strafe1D < -0.1f)
         {
-            rb.AddRelativeForce(Vector3.right * strafe1D * strafeThrust * Time.deltaTime);
+            rb.AddForce(mainCam.transform.right * strafe1D * strafeThrust * Time.deltaTime);
             horizontalGlide = strafe1D * strafeThrust;
         }
         else
         {
-            rb.AddRelativeForce(Vector3.right * horizontalGlide * Time.deltaTime);
+            rb.AddForce(mainCam.transform.right * horizontalGlide * Time.deltaTime);
             horizontalGlide *= leftRightGlideReduction;
         }
         //UpDown
         if (upDown1D > 0.1f || upDown1D < -0.1f)
         {
-            rb.AddRelativeForce(Vector3.up * upDown1D * upThrust * Time.deltaTime);
+            rb.AddForce(mainCam.transform.up * upDown1D * upThrust * Time.deltaTime);
             verticalGlide = upDown1D * upThrust;
         }
         else
         {
-            rb.AddRelativeForce(Vector3.up * verticalGlide * Time.deltaTime);
+            rb.AddForce(mainCam.transform.up * verticalGlide * Time.deltaTime);
             verticalGlide *= upDownGlideReduction;
         }
-        //Pitch
-        rb.AddRelativeTorque(Vector3.right * Mathf.Clamp((inverted ? -1f : 1f) * pitchYaw.y, -1f, 1f * pitchTorque * Time.deltaTime));
-        //Yaw
-        rb.AddRelativeTorque(Vector3.up * Mathf.Clamp(pitchYaw.x, -1f, 1f * yawTorque * Time.deltaTime));
 
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, zoneMaxSpeed);
     }
@@ -131,17 +124,17 @@ public class BasicFlight : MonoBehaviour
     #region Public Methods
 
     public void ToggleInverted()
-	{
+    {
         inverted = !inverted;
-	}
+    }
 
-	#endregion
+    #endregion
 
-	#region Input Methods
-	public void OnThrust(InputAction.CallbackContext context)
-	{
+    #region Input Methods
+    public void OnThrust(InputAction.CallbackContext context)
+    {
         thrust1D = context.ReadValue<float>();
-	}
+    }
     public void OnStrafe(InputAction.CallbackContext context)
     {
         strafe1D = context.ReadValue<float>();
@@ -154,13 +147,9 @@ public class BasicFlight : MonoBehaviour
     {
         roll1D = context.ReadValue<float>();
     }
-    public void OnPitchYaw(InputAction.CallbackContext context)
-    {
-        pitchYaw = context.ReadValue<Vector2>();
-    }
     public void OnBoost(InputAction.CallbackContext context)
-	{
+    {
         boosting = context.performed;
-	}
+    }
     #endregion
 }
