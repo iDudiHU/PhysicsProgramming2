@@ -44,7 +44,7 @@ public class Player_OnFoot : MonoBehaviour
 
     #region Public Variables
     public ScreenSpaceUIElement interactUI;
-    public SpaceShip shipToEnter;
+    public SpaceShipMovement shipToEnter;
     public delegate void OnRequestShipEntry();
     public event OnRequestShipEntry onRequestShipEntry;
 	#endregion
@@ -184,7 +184,7 @@ public class Player_OnFoot : MonoBehaviour
         inverted = !inverted;
     }
 
-    public void AssignShip(SpaceShip ship)
+    public void AssignShip(SpaceShipMovement ship)
 	{
         shipToEnter = ship;
         if (shipToEnter != null)
@@ -193,7 +193,7 @@ public class Player_OnFoot : MonoBehaviour
 		}
 	}
 
-    public void UnAssignShip(SpaceShip ship)
+    public void UnAssignShip(SpaceShipMovement ship)
 	{
         shipToEnter.onRequestShipExit -= ExitShip;
         shipToEnter = null;

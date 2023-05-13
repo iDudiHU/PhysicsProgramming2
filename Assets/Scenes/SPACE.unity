@@ -1145,10 +1145,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zoneMaxSpeed: 50
-  yawTorque: 300
-  pitchTorque: 300
-  rollTorque: 200
-  thrust: 1000
+  yawTorque: 2000
+  pitchTorque: 1000
+  rollTorque: 2000
+  thrust: 2000
   upThrust: 500
   strafeThrust: 500
   thrustGlideReduction: 0.057
@@ -1156,7 +1156,7 @@ MonoBehaviour:
   leftRightGlideReduction: 0.111
   inverted: 0
   shipCam: {fileID: 703468102}
-  maxBoostAmount: 10
+  maxBoostAmount: 100
   boostDepricationRate: 1
   boostRechargeRate: 0.5
   boostMultiplier: 10
@@ -2702,7 +2702,7 @@ GameObject:
   m_Component:
   - component: {fileID: 605361980}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Meteorids
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3639,7 +3639,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 781085825}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.000000016472137, y: 0.0000018310548, z: 0.000009765626}
+  m_LocalPosition: {x: 0.000000022698726, y: 0.0000018310548, z: 0.000009765626}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3738,7 +3738,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 787714106}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.000000016472137, y: 0.0000018310548, z: 0.000009765626}
+  m_LocalPosition: {x: 0.000000022698726, y: 0.0000018310548, z: 0.000009765626}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4552,8 +4552,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60
+  far clip plane: 100000
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -7510,6 +7510,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1791512440}
+  - component: {fileID: 1791512441}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -7533,6 +7534,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1791512441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791512439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de070491811d9964898a475e1d8e5b30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1835150511
 GameObject:
   m_ObjectHideFlags: 0
@@ -18179,10 +18192,10 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 8715137574313606071}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 90
     OrthographicSize: 5
     NearClipPlane: 0.3
-    FarClipPlane: 1000
+    FarClipPlane: 100000
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}

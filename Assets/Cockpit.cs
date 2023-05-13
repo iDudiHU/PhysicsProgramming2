@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class Cockpit : MonoBehaviour, IInteractable
 {
-    [SerializeField] SpaceShip spaceShip;
+    [SerializeField] SpaceShipMovement spaceShip;
 
     private Player_OnFoot player = null;
 	private ScreenSpaceUIElement ScreenSpaceUIElement = null;
 
 	private void Start()
 	{
-		spaceShip = GetComponentInParent<SpaceShip>();
+		spaceShip = GetComponentInParent<SpaceShipMovement>();
 	}
 	public void Interact(Player_OnFoot player)
     {
@@ -18,6 +18,8 @@ public class Cockpit : MonoBehaviour, IInteractable
 
 	public void OnTriggerEnter(Collider other)
 	{
+		player = null;
+		ScreenSpaceUIElement = null;
 		if (player == null)
 		{
 			player = other.GetComponentInParent<Player_OnFoot>();
@@ -26,16 +28,11 @@ public class Cockpit : MonoBehaviour, IInteractable
 		{
 			ScreenSpaceUIElement = player.interactUI;
 			player.AssignShip(spaceShip);
-		}
-		if (ScreenSpaceUIElement == null)
-		{
-			ScreenSpaceUIElement = player.interactUI;
-		}
-
-		if (ScreenSpaceUIElement != null)
-		{
-			ScreenSpaceUIElement.gameObject.SetActive(true);
-			ScreenSpaceUIElement.target = this.transform;
+			if (ScreenSpaceUIElement != null)
+			{
+				ScreenSpaceUIElement.gameObject.SetActive(true);
+				ScreenSpaceUIElement.target = this.transform;
+			}
 		}
 		
 	}
