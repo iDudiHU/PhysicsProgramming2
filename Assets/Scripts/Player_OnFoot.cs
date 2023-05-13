@@ -45,7 +45,7 @@ public class Player_OnFoot : MonoBehaviour
     #region Public Variables
     public ScreenSpaceUIElement interactUI;
     public SpaceShipMovement shipToEnter;
-    public delegate void OnRequestShipEntry();
+    public delegate void OnRequestShipEntry(SpaceShipMovement spaceship);
     public event OnRequestShipEntry onRequestShipEntry;
 	#endregion
 
@@ -166,7 +166,7 @@ public class Player_OnFoot : MonoBehaviour
         transform.parent = shipToEnter.transform;
         transform.gameObject.SetActive(false);
 
-        if (onRequestShipEntry != null) onRequestShipEntry();
+        if (onRequestShipEntry != null) onRequestShipEntry(shipToEnter);
 	}
 
     void ExitShip()

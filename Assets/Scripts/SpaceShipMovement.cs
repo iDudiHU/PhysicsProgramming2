@@ -48,6 +48,19 @@ public class SpaceShipMovement : MonoBehaviour
     public delegate void OnRequestShipExit();
     public event OnRequestShipExit onRequestShipExit;
 
+	#region Public
+    public bool IsOccupied { get { return isOccupied; } }
+    public float CurrentBoostAmount
+    {
+        get { return currentBoostAmount; }
+    }
+    public float MaxBoostAmount
+    {
+        get { return maxBoostAmount; }
+    }
+
+    #endregion
+
     #region Unity Functions
     // Start is called before the first frame update
     void Start()
@@ -163,7 +176,7 @@ public class SpaceShipMovement : MonoBehaviour
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, zoneMaxSpeed);
     }
 
-    void PlayerEnteredShip()
+    void PlayerEnteredShip(SpaceShipMovement spacehip)
 	{
         rb.isKinematic = false;
         CinemachineCameraSwitcher.SwitchCamera(shipCam);
