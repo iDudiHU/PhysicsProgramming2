@@ -91,11 +91,7 @@ public class Player_OnFoot : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-        IInteractable interactable = other.GetComponent<IInteractable>();
-        if (interactable != null)
-		{
-            interactable.Interact(this);
-		}
+
 	}
 	#endregion
 
@@ -161,13 +157,6 @@ public class Player_OnFoot : MonoBehaviour
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, zoneMaxSpeed);
     }
 
-    void EnterShip()
-	{
-        transform.parent = shipToEnter.transform;
-        transform.gameObject.SetActive(false);
-
-        if (onRequestShipEntry != null) onRequestShipEntry(shipToEnter);
-	}
 
     void ExitShip()
 	{
@@ -178,6 +167,13 @@ public class Player_OnFoot : MonoBehaviour
     #endregion
 
     #region Public Methods
+    public void EnterShip()
+	{
+        transform.parent = shipToEnter.transform;
+        transform.gameObject.SetActive(false);
+
+        if (onRequestShipEntry != null) onRequestShipEntry(shipToEnter);
+	}
 
     public void ToggleInverted()
     {
@@ -221,28 +217,6 @@ public class Player_OnFoot : MonoBehaviour
     public void OnBoost(InputAction.CallbackContext context)
     {
         boosting = context.performed;
-    }
-
-    public void OnInteract(InputAction.CallbackContext context)
-    {
-        if(shipToEnter != null)
-		{
-            if (context.phase == InputActionPhase.Started)
-            {
-                interactUI.StartSliderAnimation();
-            }
-            else if (context.phase == InputActionPhase.Performed)
-            {
-                EnterShip();
-                interactUI.StopSliderAnimation();
-
-            }
-            else if (context.phase == InputActionPhase.Canceled)
-            {
-                interactUI.StopSliderAnimation();
-            }
-        }
-        
     }
     #endregion
 }

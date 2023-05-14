@@ -21,7 +21,7 @@ public class WorldUIElement : MonoBehaviour
 	}
 	private void UpdateCanvasPositionAndRotation()
     {
-		transform.position = Vector3.Lerp(target.position, cam.transform.position, 0.25f);
-		transform.LookAt(target);
+		var rotation = cam.transform.rotation;
+		transform.LookAt(transform.position + rotation * Vector3.forward, rotation * Vector3.up);
     }
 }

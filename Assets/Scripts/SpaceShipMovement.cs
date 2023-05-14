@@ -178,9 +178,12 @@ public class SpaceShipMovement : MonoBehaviour
 
     void PlayerEnteredShip(SpaceShipMovement spacehip)
 	{
-        rb.isKinematic = false;
-        CinemachineCameraSwitcher.SwitchCamera(shipCam);
-        isOccupied = true;
+        if (!isOccupied)
+		{
+            rb.isKinematic = false;
+            CinemachineCameraSwitcher.SwitchCamera(shipCam);
+            isOccupied = true;
+		}
 	}
 
     void playerExitedShip()
@@ -225,12 +228,11 @@ public class SpaceShipMovement : MonoBehaviour
 	{
         boosting = context.performed;
 	}
-    public void OnInteract(InputAction.CallbackContext context)
+    public void OnExit(InputAction.CallbackContext context)
     {
         if (isOccupied && context.phase == InputActionPhase.Performed)
         {
             playerExitedShip();
-
         }
     }
     #endregion
