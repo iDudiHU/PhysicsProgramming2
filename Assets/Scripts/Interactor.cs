@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 public class Interactor : MonoBehaviour
 {
@@ -47,7 +48,7 @@ public class Interactor : MonoBehaviour
 		{
 			foreach (Collider collider in colliders)
 			{
-				if(collider == null)
+				if (collider == null)
 				{
 					continue;
 				}
@@ -72,7 +73,8 @@ public class Interactor : MonoBehaviour
 				interactionType = closestInteractable.Type;
 				lastTarget = closestInteractable;
 			}
-		} else
+		}
+		else
 		{
 			if (closestInteractable == null)
 			{
@@ -81,7 +83,7 @@ public class Interactor : MonoBehaviour
 			}
 		}
 
-		
+
 	}
 
 	#endregion
@@ -96,33 +98,34 @@ public class Interactor : MonoBehaviour
 	{
 		if (lastTarget != null)
 		{
-			if (interactionType == InteractionType.Hold)
+			switch (context.phase)
 			{
-				if (context.phase == InputActionPhase.Started)
-				{
-					timeSinceLastInteract = Time.time;
-					interactUI.StartSliderAnimation();
-				}
-				else if (context.phase == InputActionPhase.Performed)
-				{
-					if(Time.time - timeSinceLastInteract >= 1)
+				case InputActionPhase.Started:
+					if (interactionType == InteractionType.Press)
 					{
 						lastTarget.Interact(this);
 					}
+					else
+					{
+						interactUI.StartSliderAnimation();
+					}
+					break;
+
+				case InputActionPhase.Performed:
+					if (interactionType == InteractionType.Hold)
+					{
+						lastTarget.Interact(this);
 						interactUI.StopSliderAnimation();
-						timeSinceLastInteract = Time.time;
-				}
-				else if (context.phase == InputActionPhase.Canceled)
-				{
+					}
+					break;
+
+				case InputActionPhase.Canceled:
 					interactUI.StopSliderAnimation();
-				}
-			}
-			else if (interactionType == InteractionType.Press)
-			{
-				lastTarget.Interact(this);
+					break;
 			}
 		}
 	}
+
 	#endregion
 
 	#region Debug  Functions
