@@ -19,7 +19,6 @@ public class SpaceShipShooting : MonoBehaviour
 
     [Header("=== Lazer Settings ===")]
     [SerializeField] LineRenderer[] lasers;
-    [SerializeField] ParticleSystem laserHitParticles;
     [SerializeField] float miningPower = 1f;
     [SerializeField] float laserHeatThreshold = 10f;
     [SerializeField] float laserHeatRate = 1f;
@@ -82,7 +81,7 @@ public class SpaceShipShooting : MonoBehaviour
                 Vector3 localHitPosition = laser.transform.InverseTransformPoint(hitInfo.point);
                 laser.gameObject.SetActive(true);
                 laser.SetPosition(1, localHitPosition);
-                //laser.GetComponent<Laser>().targetInRange = true;
+                laser.GetComponent<Laser>().targetInRange = true;
             } 
 		} else
 		{
@@ -90,7 +89,7 @@ public class SpaceShipShooting : MonoBehaviour
             {
                 laser.gameObject.SetActive(true);
                 laser.SetPosition(1, new Vector3(0, 0, hardpointRange));
-                //laser.GetComponent<Laser>().targetInRange = false;
+                laser.GetComponent<Laser>().targetInRange = false;
             }
         }
 

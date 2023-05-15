@@ -9,6 +9,7 @@ public class Laser : MonoBehaviour
 
 	public F3DFXType fxType; // Weapon type
 	public bool OneShot; // Constant or single beam?
+	public bool targetInRange;
 
 	public Texture[] BeamFrames; // Animation frame sequence
 	public float FrameStep; // Animation time
@@ -30,7 +31,7 @@ public class Laser : MonoBehaviour
 	int FrameTimerID; // Frame timer reference
 	float beamLength; // Current beam length
 	float initialBeamOffset; // Initial UV offset 
-	public float fxOffset; // Fx offset from bullet's touch point      
+	public float fxOffset; // Fx offset from bullet's touch point
 
 	void Awake()
 	{
@@ -191,8 +192,19 @@ public class Laser : MonoBehaviour
 			lineRenderer.material.SetTextureOffset("_BaseMap", new Vector2(v, 0));
 		}
 
+		if (targetInRange)
+		{
+			// Adjust impact effect position
+			rayImpact.localPosition = lineRenderer.GetPosition(1) - transform.forward * 0.5f;
+		}
+		else
+		{
+			// Adjust impact effect position
+			rayImpact.localPosition = lineRenderer.GetPosition(1);
+		}
+
 		// Raycast for laser beams
-		if (!OneShot)
-			Raycast();
+		//if (!OneShot)
+			//Raycast();
 	}
 }

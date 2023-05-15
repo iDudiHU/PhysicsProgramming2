@@ -25,6 +25,7 @@ public class SpaceShipMovement : MonoBehaviour
     [SerializeField] float boostDepricationRate = 0.25f;
     [SerializeField] float boostRechargeRate = 0.5f;
     [SerializeField] float boostMultiplier = 5f;
+    [SerializeField] GameObject[] Boosters;
     private float currentBoostAmount = 0f;
     private bool boosting = false;
 
@@ -58,6 +59,10 @@ public class SpaceShipMovement : MonoBehaviour
     {
         get { return maxBoostAmount; }
     }
+    public float CurrentSpeed
+	{
+        get { return rb.velocity.magnitude; }
+	}
 
     #endregion
 
@@ -106,6 +111,7 @@ public class SpaceShipMovement : MonoBehaviour
 		{
 			HandleBoosting();
 			HandleMovement();
+            HandleVFX();
 		}
 	}
 	#endregion
@@ -174,6 +180,18 @@ public class SpaceShipMovement : MonoBehaviour
         rb.AddRelativeTorque(Vector3.up * Mathf.Clamp(pitchYaw.x, -1f, 1f) * yawTorque * Time.deltaTime);
 
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, zoneMaxSpeed);
+    }
+
+    void HandleVFX()
+	{
+        if (Boosters.Length > 0)
+		{
+            float boostSize = Mathf.Lerp(0.5f, 1.75f, CurrentSpeed/zoneMaxSpeed);
+            foreach(GameObject booster in Boosters)
+		    {
+                booster.transform.localScale = new Vector3(booster.transform.localScale.x, boostSize, booster.transform.localScale.z);
+		    }
+		}
     }
 
     void PlayerEnteredShip(SpaceShipMovement spacehip)
