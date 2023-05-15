@@ -19,7 +19,10 @@ public class SpaceShipShooting : MonoBehaviour
 
     [Header("=== Lazer Settings ===")]
     [SerializeField] LineRenderer[] lasers;
+    [SerializeField] GameObject decal;
     [SerializeField] float miningPower = 1f;
+    [SerializeField] float timeBetweenDamage = 0.25f;
+    float currentTimeBetweenDamage;
     [SerializeField] float laserHeatThreshold = 10f;
     [SerializeField] float laserHeatRate = 1f;
     [SerializeField] float laserCoolRate = 2f;
@@ -70,12 +73,29 @@ public class SpaceShipShooting : MonoBehaviour
 
         currentLaserHeat = Mathf.Clamp(currentLaserHeat, 0f, laserHeatThreshold);
     }
+    void ApplyDamage(HealthComponent healthComponent)
+	{
+        currentTimeBetweenDamage += Time.deltaTime;
+        if (currentTimeBetweenDamage > timeBetweenDamage)
+		{
+            healthComponent.TakeDamage(miningPower);
+            currentTimeBetweenDamage = 0;
+		}
+	}
     private void FireLasers()
     {
         RaycastHit hitInfo;
 
         if(TargetInfo.IsTargetInRange(hardpointMiddle.transform.position, cam.transform.forward, out hitInfo, hardpointRange, shootableMask))
 		{
+            if (hitInfo.collider.GetComponentInParent<HealthComponent>())
+            {
+                ApplyDamage(hitInfo.collider.GetComponentInParent<HealthComponent>());
+                if (decal != null)
+				{
+                    SpawnDecal(hitInfo);
+				}
+            }
             foreach (LineRenderer laser in lasers)
             {
                 Vector3 localHitPosition = laser.transform.InverseTransformPoint(hitInfo.point);
@@ -96,7 +116,11 @@ public class SpaceShipShooting : MonoBehaviour
         HeatLaser();
 
     }
-
+    private void SpawnDecal(RaycastHit hitInfo)
+    {
+        GameObject decalGo = Instantiate(decal, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+        decalGo.transform.parent = hitInfo.collider.transform;
+    }
     private void DeactivateLasers()
     {
         foreach (LineRenderer laser in lasers)

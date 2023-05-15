@@ -102,20 +102,22 @@ public class HealthComponent : MonoBehaviour
 	}
 	public void TakeDamage(float ammount)
 	{
+		Log("Called");
 		if (isInvincableFromDamage || currentHealth <= 0 || isAlwaysInvincible)
 		{
 			return;
 		}
 		else
 		{
+			Log("Never reached");
 			if (hitEffect != null)
 			{
 				Instantiate(hitEffect, transform.position, transform.rotation, null);
 			}
 			OnHealthLost?.Invoke();
 			eventsOnHit?.Invoke();
-			timeToBecomeDamagableAgain = Time.time + invincibilityTime;
-			isInvincableFromDamage = true;
+			//timeToBecomeDamagableAgain = Time.time + invincibilityTime;
+			//isInvincableFromDamage = true;
 			currentHealth = Mathf.Clamp(currentHealth - ammount, 0, maximumHealth);
 			CheckDeath();
 		}
@@ -214,6 +216,7 @@ public class HealthComponent : MonoBehaviour
 
 	public void GameOver()
 	{
+		Destroy(gameObject);
 		//GameManager.GameOver();
 	}
 
