@@ -777,7 +777,7 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
     Android: CROSS_PLATFORM_INPUT;MOBILE_INPUT
-    Standalone: CROSS_PLATFORM_INPUT;DEBUG
+    Standalone: CROSS_PLATFORM_INPUT;DEBUG;AMPLIFY_SHADER_EDITOR
     Windows Store Apps: MOBILE_INPUT
     iPhone: CROSS_PLATFORM_INPUT;MOBILE_INPUT
   additionalCompilerArguments: {}
