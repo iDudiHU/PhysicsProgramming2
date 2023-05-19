@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -2314538419145318046}
   - component: {fileID: 3814311890153863280}
   - component: {fileID: -399764475342815477}
+  - component: {fileID: 5913005357696758027}
   m_Layer: 6
   m_Name: SM_Env_Asteroid_Large_02
   m_TagString: Untagged
@@ -65,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4cee7a5983b187943adc589b9cb1f084, type: 2}
+  - {fileID: 2100000, guid: 4c97d539712f40344ab75895fcd11de7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -169,3 +170,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 2
   moveForce: 1
+--- !u!114 &5913005357696758027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730252060280928521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58cf3f477b4296344bda8ec9034108f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecayTickRate: 0.25
+  DecayPerTick: 1

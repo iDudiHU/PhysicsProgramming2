@@ -12,13 +12,13 @@ GameObject:
   - component: {fileID: 33685995992041138}
   - component: {fileID: 23702285142601998}
   - component: {fileID: 54726832426244966}
-  - component: {fileID: 114870848324566418}
   - component: {fileID: 64697360294435090}
   - component: {fileID: 108279620197977950}
   - component: {fileID: -4288061771651276982}
   - component: {fileID: -2522039178967870381}
+  - component: {fileID: 4901750472113049653}
   m_Layer: 6
-  m_Name: Asteroid2
+  m_Name: m_Payload
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +33,7 @@ Transform:
   m_GameObject: {fileID: 1166888355319638}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.54, y: 2.54, z: 2.54}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9779557c388bc9245939afbb34e40e09, type: 2}
+  - {fileID: 2100000, guid: efbbf76b1363fc049bde4722e20a2d4f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -105,35 +105,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &114870848324566418
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1166888355319638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f78e946b9d2cc546b02c6d3125394d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _emissionTextures:
-  - {fileID: 2800000, guid: 9393401094e28ca4092b02c83ff6c76b, type: 3}
-  - {fileID: 2800000, guid: 1b9fd3ace44e53f41b09d07b79b36fd6, type: 3}
-  - {fileID: 2800000, guid: 61d3229c38cd0444d9ef494226a5a294, type: 3}
-  - {fileID: 2800000, guid: c7a0751b73d986c45be8b2598fc18cee, type: 3}
-  - {fileID: 2800000, guid: 2ef0f141731dc58488e7eac976b71b0b, type: 3}
-  - {fileID: 2800000, guid: 47881fad258bd43468e7ba6694e5ad76, type: 3}
-  _minMaxScale:
-    minValue: 0.25
-    maxValue: 1
-  _emissionColorIntensity:
-    minValue: 2.5
-    maxValue: 2.55
-  _colors:
-  - {r: 0, g: 0.6901961, b: 0.39215687, a: 1}
-  - {r: 0, g: 0.50980395, b: 1, a: 1}
-  _baseMaterial: {fileID: 2100000, guid: 9779557c388bc9245939afbb34e40e09, type: 2}
 --- !u!64 &64697360294435090
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -268,3 +239,29 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   debugMode: 0
+--- !u!114 &4901750472113049653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166888355319638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b382385620b3d6d428ecde9d0d487d9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _emissionTextures:
+  - {fileID: 0}
+  _minVelocity: -1
+  _maxVelocity: 1
+  _minScale: 0.25
+  _maxScale: 2
+  _minEmissionColorIntensity: 5
+  _maxEmissionColorIntensity: 8
+  _minColorChangeTime: 1
+  _maxColorChangeTime: 6
+  _minColorIntensityChangeTime: 1
+  _maxColorIntensityChangeTime: 3
+  _colors:
+  - {r: 0, g: 0, b: 0, a: 0}
