@@ -1,0 +1,28 @@
+Damage FX by FORGE3D (https://forge3d.com)
+
+------------ Getting Started ------------
+
+[!] Requires Unity Editor version 2022.2.10+
+[!] Both High Definition RP (HDRP) and Universal Rendering (URP) require version 14.0.6+ of the package.
+
+* To change rendering pipeline: *
+1. Make sure new pipeline is configured properly and its Scriptable Renderer Pipeline Settings asset is assigned in the Project Settings > Graphics. For Standard renderer this field shold be set to None (Render Pipeline Asset). 
+2. Select and extract .unitypackage matching your rendering pipeline from 'Assets/FORGE3D/DamageFX/SRP Templates' folder overwritting existing assets. 
+3. Restart Unity editor if necessary.
+
+------------ Helpful Links ------------
+
+Online Documentation:   https://docs.forge3d.com 
+Unity Asset Store:      https://assetstore.unity.com/publishers/2659
+
+------------ Community and Support ------------
+
+Email support:          https://forge3d.com/contact/
+Discord:                https://discord.gg/c9JQuDC
+
+------------ Thank you! ------------
+
+We really hope you like using Damage FX, and sincerely appreciate your time to provide us with comments, feedback, and suggestions. 
+
+Please share your ideas in the Discord server (https://discord.gg/c9JQuDC) and leave us a review:
+https://u3d.as/Yxw

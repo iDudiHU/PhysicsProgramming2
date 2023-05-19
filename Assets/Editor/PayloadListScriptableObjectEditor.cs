@@ -68,7 +68,37 @@ public class PayloadListScriptableObjectEditor : Editor
 
         EditorGUILayout.LabelField("Total Weight: " + totalWeight);
 
-        // Normalize the weights
+        // Button for adding new elements
+        if (GUILayout.Button("Add Element"))
+        {
+            showDefaultInspector = true;
+        }
+
+        if (GUILayout.Button("Normalize Weights"))
+        {
+            NormalizeWeights();
+        }
+
+        if (showDefaultInspector)
+        {
+            EditorGUILayout.Space();
+
+            // Draw the default inspector for adding a new element
+            DrawDefaultInspector();
+
+            EditorGUILayout.Space();
+
+            if (GUILayout.Button("Done"))
+            {
+                showDefaultInspector = false;
+            }
+        }
+
+        serializedObject.ApplyModifiedProperties();
+    }
+
+    private void NormalizeWeights()
+    {
         if (totalWeight > 0f)
         {
             float normalizationFactor = 1f / totalWeight;
@@ -92,30 +122,6 @@ public class PayloadListScriptableObjectEditor : Editor
                 }
             }
         }
-
         serializedPayloadList.ApplyModifiedProperties(); // Apply changes to the main serialized object
-
-        // Button for adding new elements
-        if (GUILayout.Button("Add Element"))
-        {
-            showDefaultInspector = true;
-        }
-
-        if (showDefaultInspector)
-        {
-            EditorGUILayout.Space();
-
-            // Draw the default inspector for adding a new element
-            DrawDefaultInspector();
-
-            EditorGUILayout.Space();
-
-            if (GUILayout.Button("Done"))
-            {
-                showDefaultInspector = false;
-            }
-        }
-
-        serializedObject.ApplyModifiedProperties();
     }
 }
