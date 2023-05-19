@@ -19,7 +19,7 @@ public class SpaceShipShooting : MonoBehaviour
 
     [Header("=== Lazer Settings ===")]
     [SerializeField] LineRenderer[] lasers;
-    [SerializeField] GameObject decal;
+    [SerializeField] ImpactSurfaceFX impactFX;
     [SerializeField] float miningPower = 1f;
     [SerializeField] float timeBetweenDamage = 0.25f;
     float currentTimeBetweenDamage;
@@ -47,6 +47,7 @@ public class SpaceShipShooting : MonoBehaviour
 	private void Awake()
 	{
         spaceship = GetComponent<SpaceShipMovement>();
+        impactFX = GetComponent<ImpactSurfaceFX>();
         cam = Camera.main;
 	}
 	private void Update()
@@ -91,9 +92,10 @@ public class SpaceShipShooting : MonoBehaviour
             if (hitInfo.collider.GetComponentInParent<HealthComponent>())
             {
                 ApplyDamage(hitInfo.collider.GetComponentInParent<HealthComponent>());
-                if (decal != null)
+                var dfx = hitInfo.collider.GetComponentInParent<DamageFX>();
+                if (impactFX != null && dfx != null)
 				{
-                    SpawnDecal(hitInfo);
+                    impactFX.ApplyVFX(dfx, hitInfo);
 				}
             }
             foreach (LineRenderer laser in lasers)
@@ -115,11 +117,6 @@ public class SpaceShipShooting : MonoBehaviour
 
         HeatLaser();
 
-    }
-    private void SpawnDecal(RaycastHit hitInfo)
-    {
-        GameObject decalGo = Instantiate(decal, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-        decalGo.transform.parent = hitInfo.collider.transform;
     }
     private void DeactivateLasers()
     {

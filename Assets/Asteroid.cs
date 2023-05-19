@@ -2,19 +2,18 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
-    #region Private Variables
-    [SerializeField] private float rotationSpeed = 10f; // Speed of the asteroid's rotation
-    [SerializeField] private float moveForce = 10f; // Force applied to the asteroid for initial movement
-    private Rigidbody rigidbody; // Reference to the asteroid's Rigidbody component
-    #endregion
+    [SerializeField] private float rotationSpeed = 10f;
+    [SerializeField] private float moveForce = 10f;
+    [SerializeField] private PayloadListScriptableObject payloadList;
+    private int selectedPayloadIndex;
+    private Rigidbody rigidbody;
 
-    #region Unity Functions
-    // Start is called before the first frame update
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         ApplyRandomRotation();
         ApplyRandomForce();
+        SelectPayload();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -22,13 +21,6 @@ public class Asteroid : MonoBehaviour
         // Handle collision logic here
     }
 
-    private void OnDestroy()
-    {
-        // Destruction logic here
-    }
-    #endregion
-
-    #region Private Functions
     private void ApplyRandomRotation()
     {
         Vector3 randomRotation = Random.insideUnitSphere * rotationSpeed;
@@ -40,9 +32,50 @@ public class Asteroid : MonoBehaviour
         Vector3 randomForce = Random.insideUnitSphere * moveForce;
         rigidbody.AddForce(randomForce, ForceMode.Impulse);
     }
-    #endregion
 
-    #region Public Functions
-    // Add any public functions here
-    #endregion
+    private void SelectPayload()
+    {
+        if (payloadList != null && payloadList.PayloadList.Count > 0)
+        {
+            float totalWeight = 0f;
+            foreach (var payload in payloadList.PayloadList)
+            {
+                totalWeight += payload.weight;
+            }
+
+            float randomWeightPoint = Random.value * totalWeight;
+
+            float accumulatedWeight = 0f;
+            for (int i = 0; i < payloadList.PayloadList.Count; i++)
+            {
+                var payload = payloadList.PayloadList[i];
+                accumulatedWeight += payload.weight;
+
+                if (randomWeightPoint <= accumulatedWeight)
+                {
+                    selectedPayloadIndex = i;
+                    return;
+                }
+            }
+        }
+    }
+
+    private void SpawnSelectedPayload()
+    {
+        if (selectedPayloadIndex >= 0 && selectedPayloadIndex < payloadList.PayloadList.Count)
+        {
+            var selectedPayload = payloadList.PayloadList[selectedPayloadIndex];
+			for (int i = 0; i < Random.Range(selectedPayload.minSpawns, selectedPayload.maxSpawns); i++)
+			{
+                GameObject go = Instantiate(selectedPayload.asteroid, transform.position, transform.rotation, null);
+                go.GetComponent<Payload>().Initialize(selectedPayload);
+			}
+        }
+    }
+
+    public void Kill()
+	{
+        SpawnSelectedPayload();
+        Destroy(this.gameObject);
+    }
 }
