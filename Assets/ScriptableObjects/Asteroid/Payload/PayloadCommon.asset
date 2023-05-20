@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PayloadCommon
   m_EditorClassIdentifier: 
   asteroid: {fileID: 1166888355319638, guid: 7031a5477cdbee8449a7c11e94bc14c4, type: 3}
-  weight: 0
+  weight: 0.4
   minSpawns: 5
   maxSpawns: 10
   emissionTextures:

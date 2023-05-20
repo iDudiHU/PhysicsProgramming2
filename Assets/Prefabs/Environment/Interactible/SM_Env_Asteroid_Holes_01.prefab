@@ -794,7 +794,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4c97d539712f40344ab75895fcd11de7, type: 2}
+  - {fileID: 2100000, guid: a907d2a4fadac2240b17256d1c9cbc3d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -899,7 +899,19 @@ MonoBehaviour:
         m_CallState: 2
   eventsOnHit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 290614506587851169}
+        m_TargetAssemblyTypeName: DamageFX, Assembly-CSharp
+        m_MethodName: LastHitUpdate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   eventsOnRespawn:
     m_PersistentCalls:
       m_Calls: []
@@ -944,11 +956,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 3010751744182980205}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58cf3f477b4296344bda8ec9034108f3, type: 3}
+  m_Script: {fileID: 11500000, guid: 241e1b41552ee6640917d261b530dfb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   DecayTickRate: 0.25
   DecayPerTick: 1
+  defaultAsteroidMaterial: {fileID: 2100000, guid: ace554b28b3c23448817bd8c63e751ff,
+    type: 2}
+  damageFxMaterial: {fileID: 2100000, guid: a907d2a4fadac2240b17256d1c9cbc3d, type: 2}
+  hitTimeLimit: 30
 --- !u!1 &3227005750405618897
 GameObject:
   m_ObjectHideFlags: 0
